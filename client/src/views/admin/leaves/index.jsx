@@ -24,6 +24,7 @@ const CalendarPage = () => {
   const [tableData, setTableData] = useState([]);
   const [events, setEvents] = useState([]); // New state for upcoming holidays
   const [todayLeavesDatalength, settodayLeavesDatalength] = useState(0);
+  const [totalLeavesDatalength, settotalLeavesDatalenght] = useState(0);
   const [pendingApprovals, setPendingApprovals] = useState(0); // New state for pending approvals
 
   useEffect(() => {
@@ -69,6 +70,8 @@ const CalendarPage = () => {
 
         // Filter today's leaves
         const todayLeaves = filterData(transformedData, "Leaves Applied Today");
+        const totalLeaves = filterData(transformedData, 'Total Leaves')
+        settotalLeavesDatalenght(totalLeaves.length);
         settodayLeavesDatalength(todayLeaves.length);
 
         // Calculate pending approvals
@@ -136,7 +139,7 @@ const CalendarPage = () => {
             />
           }
           name="Total Leaves"
-          value={tableData.length} // Display total number of leaves
+          value={totalLeavesDatalength} // Display total number of leaves
           isSelected={selectedStat === "Total Leaves"}
           onClick={() => handleSelect("Total Leaves")}
         />
