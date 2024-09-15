@@ -9,6 +9,9 @@ import {
   MenuList,
   MenuItem,
   Button,
+  Link, 
+  Text,
+  Flex
 } from "@chakra-ui/react";
 import MiniStatistics from "components/card/MiniStatistics";
 import IconBox from "components/icons/IconBox";
@@ -20,6 +23,7 @@ import {
   MdOutlineEvent,
   MdEventAvailable,
 } from "react-icons/md";
+import ComingSoon from "components/comingSoon";
 
 const Contests = () => {
   const brandColor = useColorModeValue("brand.500", "white");
@@ -35,91 +39,18 @@ const Contests = () => {
   const handleSubjectChange = (subject) => {
     setSelectedSubject(subject);
   };
-
-  const tableData = [
-    { 
-      name: 'Code Jam', 
-      progress: '75%', 
-      quantity: 'Round 2', 
-      date: '2024-09-05' 
-    },
-    { 
-      name: 'Hackathon 2024', 
-      progress: '40%', 
-      quantity: 'Phase 1', 
-      date: '2024-09-10' 
-    },
-    { 
-      name: 'AI Challenge', 
-      progress: '20%', 
-      quantity: 'Qualifier', 
-      date: '2024-09-15' 
-    },
-  ];  
-
   return (
-    // <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-    //   {/* Filter Button */}
-    //   <Menu>
-    //   <MenuButton
-    //       as={Button}
-    //       bg="#412AFB"
-    //       color="white"
-    //       _hover={{ bg: "#341FB0" }} 
-    //       _active={{ bg: "#2E1B9A" }} 
-    //       mb="20px"
-    //     >
-    //       {selectedSubject}
-    //     </MenuButton>
-    //     <MenuList>
-    //       <MenuItem onClick={() => handleSubjectChange('ADA')}>ADA</MenuItem>
-    //       <MenuItem onClick={() => handleSubjectChange('DBMS')}>DBMS</MenuItem>
-    //       <MenuItem onClick={() => handleSubjectChange('AP')}>AP</MenuItem>
-    //       <MenuItem onClick={() => handleSubjectChange('Placement')}>Placement</MenuItem>
-    //     </MenuList>
-    //   </Menu>
-
-    //   {/* Statistics */}
-    //   <SimpleGrid
-    //     columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
-    //     gap="20px"
-    //     mb="20px">
-    //     {/* Previous Contests */}
-    //     <MiniStatistics
-    //       startContent={
-    //         <IconBox
-    //           w="56px"
-    //           h="56px"
-    //           bg={boxBg}
-    //           icon={
-    //             <Icon w="32px" h="32px" as={MdOutlineAssessment} color={brandColor} />
-    //           }
-    //         />
-    //       }
-    //       name="Previous Contests"
-    //       isSelected={selectedStat === 'Previous Contests'}
-    //       onClick={() => handleSelect('Previous Contests')}
-    //     />
-    //     {/* Upcoming Contests */}
-    //     <MiniStatistics
-    //       startContent={
-    //         <IconBox
-    //           w="56px"
-    //           h="56px"
-    //           bg={boxBg}
-    //           icon={
-    //             <Icon w="32px" h="32px" as={MdOutlineEvent} color={brandColor} />
-    //           }
-    //         />
-    //       }
-    //       name="Upcoming Contests"
-    //       isSelected={selectedStat === 'Upcoming Contests'}
-    //       onClick={() => handleSelect('Upcoming Contests')}
-    //     />
-    //   </SimpleGrid>
-    //   <ColumnTable tableData={tableData} />
-    // </Box>
-    <></>
+    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+      <ComingSoon/>
+      <Flex direction="column" align="center">
+        <Text fontSize="lg" mb="10px">Till then explore</Text>
+        <Flex direction={{ base: "column", md: "row" }} wrap="wrap" gap="10px">
+        <Link href="/admin/leaves" color={brandColor} fontSize="md" p="10px" borderRadius="md" bg={boxBg} _hover={{ bg: "blue.500", color: "white" }}>Leaves</Link>
+          <Link href="/admin/profile" color={brandColor} fontSize="md" p="10px" borderRadius="md" bg={boxBg} _hover={{ bg: "blue.500", color: "white" }}>Profile</Link>
+          <Link href="/admin/default" color={brandColor} fontSize="md" p="10px" borderRadius="md" bg={boxBg} _hover={{ bg: "blue.500", color: "white" }}>Main Dashboard</Link>
+        </Flex>
+      </Flex>
+    </Box>
   );
 };
 

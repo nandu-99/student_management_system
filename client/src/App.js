@@ -7,6 +7,7 @@ import PrivateRoute from './PrivateRoute'; // Import PrivateRoute component
 import { ChakraProvider } from '@chakra-ui/react';
 import initialTheme from './theme/theme';
 import { useState } from 'react';
+import NotFound from 'components/NotFound';
 
 export default function Main() {
   const [currentTheme, setCurrentTheme] = useState(initialTheme);
@@ -34,8 +35,12 @@ export default function Main() {
             </PrivateRoute>
           }
         />
+
         {/* Redirect to login by default */}
         <Route path="/" element={<Navigate to="/auth/sign-in" replace />} />
+
+        {/* 404 Not Found Route */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </ChakraProvider>
   );

@@ -27,31 +27,6 @@ const CalendarPage = () => {
 
   const [tableData, setTableData] = useState([]);
 
-  // useEffect(() => {
-  //   switch (selectedStat) {
-  //     case 'Total Leaves taken':
-  //       setTableData([
-  //         { name: 'Sick Leave', status: 'Approved', date: '2024/08/25' },
-  //         { name: 'Vacation', status: 'Approved', date: '2024/09/24-2024/09/28' },
-  //       ]);
-  //       break;
-  //     case 'Recent Leave History':
-  //       setTableData([
-  //         { name: 'Sick Leave', status: 'Rejected', date: '2024/08/25' },
-  //         { name: 'Leave', status: 'Pending', date: '2024/09/24' },
-  //       ]);
-  //       break;
-  //       case 'Upcoming Holidays':
-  //         setTableData([
-  //           { name: 'Christmas', occasion: 'Christmas Day', date: '2024/12/25' },
-  //           { name: 'New Year', occasion: 'New Year’s Eve', date: '2024/12/31' },
-  //         ]);
-  //       break;
-  //     default:
-  //       setTableData([]);
-  //   }
-  // }, [selectedStat]);
-
   useEffect(() => {
     const fetchData = async () => {
       let data;
@@ -152,7 +127,7 @@ const CalendarPage = () => {
             pe="20px"
           />
         </Box>
-        <Box>
+        <Box maxH="620px" overflowY="auto">
           <ComplexTable tableData={tableData} type={selectedStat} />
         </Box>
       </Grid>

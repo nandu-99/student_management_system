@@ -16,6 +16,16 @@ import {
   Tooltip,
   IconButton,
   useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  Input,
+  useDisclosure,
+  Image,
 } from '@chakra-ui/react';
 import {
   createColumnHelper,
@@ -30,6 +40,7 @@ import { useState } from 'react';
 import * as React from 'react';
 import { MdCancel, MdCheckCircle, MdPending, MdInfo } from 'react-icons/md';
 import { approveOrRejectLeave } from 'api/api';
+import { WarningTwoIcon } from '@chakra-ui/icons'; // You can replace this with a GIF if you prefer
 
 const columnHelper = createColumnHelper();
 
@@ -37,6 +48,9 @@ export default function ComplexTable({ tableData, type }) {
   const [sorting, setSorting] = React.useState([]);
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = useState(false);
+  const [selectedRejectId, setSelectedRejectId] = useState(null); // To track the row being rejected
+  const [rejectReason, setRejectReason] = useState(''); // To track the entered reason for rejection
+  const { isOpen, onOpen, onClose } = useDisclosure(); // Chakra UI's modal hooks
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
   const toast = useToast();
@@ -51,197 +65,98 @@ export default function ComplexTable({ tableData, type }) {
 
   const handleApprove = async (id) => {
     try {
-      setLoading(true); // Set loading state to true
-      await approveOrRejectLeave(id, 'approve'); // Call the API function
-      
-      // Show a success toast
+      setLoading(true);
+      await approveOrRejectLeave(id, 'approve');
       toast({
         title: 'Leave approved.',
         description: `Leave has been approved successfully.`,
         status: 'success',
         duration: 5000,
         isClosable: true,
-        position: 'top-right'
+        position: 'top-right',
       });
     } catch (error) {
       console.error('Error approving leave:', error);
-
-      // Show an error toast
       toast({
         title: 'Error approving leave.',
         description: error.message || 'An unexpected error occurred.',
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top-right'
+        position: 'top-right',
       });
     } finally {
-      setLoading(false); // Set loading state back to false
+      setLoading(false);
     }
   };
 
-  const handleReject = async (id) => {
+  const handleReject = async () => {
     try {
-      setLoading(true); // Set loading state to true
-      await approveOrRejectLeave(id, 'reject'); // Call the API function
-
-      // Show a success toast
+      setLoading(true);
+      await approveOrRejectLeave(selectedRejectId, 'reject', rejectReason);
       toast({
         title: 'Leave rejected.',
         description: `Leave has been rejected.`,
         status: 'success',
         duration: 5000,
         isClosable: true,
-        position: 'top-right'
+        position: 'top-right',
       });
+      onClose(); // Close the modal after rejection
     } catch (error) {
       console.error('Error rejecting leave:', error);
-
-      // Show an error toast
       toast({
         title: 'Error rejecting leave.',
         description: error.message || 'An unexpected error occurred.',
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top-right'
+        position: 'top-right',
       });
     } finally {
-      setLoading(false); // Set loading state back to false
+      setLoading(false);
+      setRejectReason(''); // Reset the reason field
     }
   };
 
-  const columns = React.useMemo(() => {
-    const commonColumns = [
-      columnHelper.accessor('studentEnrollmentNumber', {
-        id: 'studentEnrollmentNumber',
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: '10px', lg: '12px' }}
-            color="gray.400"
-          >
-            ENROLLMENT NUMBER
-          </Text>
-        ),
-        cell: (info) => (
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        ),
-      }),
-      columnHelper.accessor('studentName', {
-        id: 'studentName',
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: '10px', lg: '12px' }}
-            color="gray.400"
-          >
-            STUDENT NAME
-          </Text>
-        ),
-        cell: (info) => (
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        ),
-      }),
-      columnHelper.accessor('batch', {
-        id: 'batch',
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: '10px', lg: '12px' }}
-            color="gray.400"
-          >
-            BATCH
-          </Text>
-        ),
-        cell: (info) => (
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        ),
-      }),
-      columnHelper.accessor('leaveType', {
-        id: 'leaveType',
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: '10px', lg: '12px' }}
-            color="gray.400"
-          >
-            LEAVE TYPE
-          </Text>
-        ),
-        cell: (info) => (
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        ),
-      }),
-      columnHelper.accessor('date', {
-        id: 'date',
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: '10px', lg: '12px' }}
-            color="gray.400"
-          >
-            DATE
-          </Text>
-        ),
-        cell: (info) => (
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        ),
-      }),
-      columnHelper.display({
-        id: 'info',
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: '10px', lg: '12px' }}
-            color="gray.400"
-          >
-            INFO
-          </Text>
-        ),
-        cell: ({ row }) => (
-          <Tooltip label={row.original.reason || "No additional information"} aria-label="Info Tooltip">
-            <IconButton
-              size="sm"
-              variant="outline"
-              colorScheme="gray"
-              icon={<MdInfo />}
-              aria-label="Information"
-            />
-          </Tooltip>
-        ),
-      }),
-    ];
+  const openRejectModal = (id) => {
+    setSelectedRejectId(id); // Store the ID of the row to be rejected
+    onOpen(); // Open the modal
+  };
 
+  const columns = React.useMemo(() => {
     if (type === 'Upcoming Holidays') {
       return [
-        ...commonColumns,
-        columnHelper.accessor('occasion', {
-          id: 'occasion',
+        columnHelper.accessor('event', {
+          id: 'event',
           header: () => (
             <Text
               justifyContent="space-between"
-              align="center"
+              align="flex-start"
               fontSize={{ sm: '10px', lg: '12px' }}
               color="gray.400"
             >
-              OCCASION
+              EVENT NAME
+            </Text>
+          ),
+          cell: (info) => (
+            <Flex align="center">
+              <Text color={textColor} fontSize="sm" fontWeight="700">
+                {info.getValue()}
+              </Text>
+            </Flex>
+          ),
+        }),
+        columnHelper.accessor('date', {
+          id: 'date',
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="flex-start"
+              fontSize={{ sm: '10px', lg: '12px' }}
+              color="gray.400"
+            >
+              DATE
             </Text>
           ),
           cell: (info) => (
@@ -250,8 +165,11 @@ export default function ComplexTable({ tableData, type }) {
             </Text>
           ),
         }),
-        columnHelper.display({
-          id: 'actions',
+      ];
+    } else {
+      const commonColumns = [
+        columnHelper.accessor('studentEnrollmentNumber', {
+          id: 'studentEnrollmentNumber',
           header: () => (
             <Text
               justifyContent="space-between"
@@ -259,36 +177,114 @@ export default function ComplexTable({ tableData, type }) {
               fontSize={{ sm: '10px', lg: '12px' }}
               color="gray.400"
             >
-              ACTIONS
+              ENROLLMENT NUMBER
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor('studentName', {
+          id: 'studentName',
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: '10px', lg: '12px' }}
+              color="gray.400"
+            >
+              STUDENT NAME
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor('batch', {
+          id: 'batch',
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: '10px', lg: '12px' }}
+              color="gray.400"
+            >
+              BATCH
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor('leaveType', {
+          id: 'leaveType',
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: '10px', lg: '12px' }}
+              color="gray.400"
+            >
+              LEAVE TYPE
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor('date', {
+          id: 'date',
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: '10px', lg: '12px' }}
+              color="gray.400"
+            >
+              DATE
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700" w="180px">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.display({
+          id: 'info',
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: '10px', lg: '12px' }}
+              color="gray.400"
+            >
+              INFO
             </Text>
           ),
           cell: ({ row }) => (
-            <Flex align="center" gap="2">
-              <Tooltip label="Click to approve the entry" aria-label="Approve Tooltip">
-                <Button
-                  size="sm"
-                  colorScheme="green"
-                  onClick={() => handleApprove(row.original.id)}
-                >
-                  Approve
-                </Button>
-              </Tooltip>
-              <Tooltip label="Click to reject the entry" aria-label="Reject Tooltip">
-                <Button
-                  size="sm"
-                  colorScheme="red"
-                  onClick={() => handleReject(row.original.id)}
-                >
-                  Reject
-                </Button>
-              </Tooltip>
-            </Flex>
+            <Tooltip
+              label={row.original.reason || 'No additional information'}
+              aria-label="Info Tooltip"
+            >
+              <IconButton
+                size="sm"
+                variant="outline"
+                colorScheme="gray"
+                icon={<MdInfo />}
+                aria-label="Information"
+              />
+            </Tooltip>
           ),
         }),
-      ];
-    } else {
-      return [
-        ...commonColumns,
         columnHelper.accessor('status', {
           id: 'status',
           header: () => (
@@ -332,47 +328,62 @@ export default function ComplexTable({ tableData, type }) {
             </Flex>
           ),
         }),
-        columnHelper.display({
-          id: 'actions',
-          header: () => (
-            <Text
-              justifyContent="space-between"
-              align="center"
-              fontSize={{ sm: '10px', lg: '12px' }}
-              color="gray.400"
-            >
-              ACTIONS
-            </Text>
-          ),
-          cell: ({ row }) => (
-            <Flex align="center" gap="2">
-              <Tooltip label="Click to approve the entry" aria-label="Approve Tooltip">
-                <Button
-                  size="sm"
-                  colorScheme="green"
-                  onClick={() => handleApprove(row.original.id)}
-                >
-                  Approve
-                </Button>
-              </Tooltip>
-              <Tooltip label="Click to reject the entry" aria-label="Reject Tooltip">
-                <Button
-                  size="sm"
-                  colorScheme="red"
-                  onClick={() => handleReject(row.original.id)}
-                >
-                  Reject
-                </Button>
-              </Tooltip>
-            </Flex>
-          ),
-        }),
       ];
+  
+      if (type !== 'Total Leaves') {
+        commonColumns.push(
+          columnHelper.display({
+            id: 'actions',
+            header: () => (
+              <Text
+                justifyContent="space-between"
+                align="center"
+                fontSize={{ sm: '10px', lg: '12px' }}
+                color="gray.400"
+              >
+                ACTIONS
+              </Text>
+            ),
+            cell: ({ row }) => (
+              <Flex align="center" gap="2">
+                <Tooltip
+                  label="Click to approve the entry"
+                  aria-label="Approve Tooltip"
+                >
+                  <Button
+                    size="sm"
+                    colorScheme="green"
+                    onClick={() => handleApprove(row.original.id)}
+                  >
+                    Approve
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  label="Click to reject the entry"
+                  aria-label="Reject Tooltip"
+                >
+                  <Button
+                    size="sm"
+                    colorScheme="red"
+                    onClick={() => openRejectModal(row.original.id)}
+                  >
+                    Reject
+                  </Button>
+                </Tooltip>
+              </Flex>
+            ),
+          })
+        );
+      }
+  
+      return commonColumns;
     }
-  }, [type, textColor]);
+  }, [textColor, type]);
+  
+  
 
   const table = useReactTable({
-    data: tableData,
+    data: tableData || [],
     columns,
     state: {
       sorting,
@@ -385,10 +396,26 @@ export default function ComplexTable({ tableData, type }) {
   return (
     <>
       {error ? (
-        <Alert status="error" mb="4">
-          <AlertIcon />
-          {error}
-        </Alert>
+        <Flex justify="center" align="center" h="80vh" mt="-10">
+          <Box
+            p="4"
+            maxW="sm"
+            borderWidth="2px"
+            borderRadius="lg"
+            overflow="hidden"
+            borderColor={borderColor}
+            textAlign="center"
+          >
+            <WarningTwoIcon w={16} h={16} color="orange.300" mb={4} />
+            {/* You can replace the icon with a GIF by using an <Image> tag */}
+            <Text fontSize="xl" fontWeight="bold" mb={2}>
+              Oops! No Data Available
+            </Text>
+            <Text fontSize="lg" color="gray.500">
+              It looks like no one applied leaves today. Please try again later!
+            </Text>
+          </Box>
+        </Flex>
       ) : (
         <Card>
           <Table variant="simple">
@@ -435,6 +462,34 @@ export default function ComplexTable({ tableData, type }) {
           </Table>
         </Card>
       )}
+
+      {/* Modal for rejecting leave */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Reason for Rejection</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input
+              placeholder="Enter the reason for rejection"
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              colorScheme="red"
+              onClick={handleReject}
+              isLoading={loading}
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }

@@ -18,6 +18,7 @@ import {
   MdOutlineEvent,
 } from "react-icons/md";
 import { getContests } from "api/api";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const Contests = () => {
   const brandColor = useColorModeValue("brand.500", "white");
@@ -79,6 +80,7 @@ const Contests = () => {
           _hover={{ bg: "#341FB0" }} 
           _active={{ bg: "#2E1B9A" }} 
           mb="20px"
+          rightIcon={<ChevronDownIcon />}
         >
           {selectedSubject}
         </MenuButton>

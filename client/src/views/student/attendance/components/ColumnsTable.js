@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   Flex,
   Box,
@@ -10,8 +11,6 @@ import {
   Tr,
   useColorModeValue,
 } from '@chakra-ui/react';
-import * as React from 'react';
-
 import {
   createColumnHelper,
   flexRender,
@@ -26,13 +25,17 @@ import Menu from 'components/menu/MainMenu';
 
 const columnHelper = createColumnHelper();
 
-export default function ColumnTable(props) {
-  const { tableData } = props;
+export default function ColumnTable({ tableData }) {
+  const [data, setData] = useState(tableData);
   const [sorting, setSorting] = React.useState([]);
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
-  let defaultData = tableData;
   
+  // Update the data state when tableData prop changes
+  useEffect(() => {
+    setData(tableData);
+  }, [tableData]);
+
   // Updated columns to match the attendance data structure
   const columns = [
     columnHelper.accessor('subject', {
@@ -55,8 +58,8 @@ export default function ColumnTable(props) {
         </Flex>
       ),
     }),
-    columnHelper.accessor('totalClasses', {
-      id: 'totalClasses',
+    columnHelper.accessor('total', {
+      id: 'total',
       header: () => (
         <Text
           justifyContent="space-between"
@@ -110,8 +113,7 @@ export default function ColumnTable(props) {
       ),
     }),
   ];
-  
-  const [data, setData] = React.useState(() => [...defaultData]);
+
   const table = useReactTable({
     data,
     columns,
@@ -123,7 +125,7 @@ export default function ColumnTable(props) {
     getSortedRowModel: getSortedRowModel(),
     debugTable: true,
   });
-  
+
   return (
     <Card
       flexDirection="column"

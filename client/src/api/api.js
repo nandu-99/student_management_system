@@ -19,8 +19,18 @@ export const login = async (email, password, role) => {
 
 export const logout = async () => {
   try {
-    const response = await axios.post(`${API_URL}/logout`, {});
-    localStorage.removeItem('token');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const response = await axios.post(`${API_URL}/logout`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    if(response.data){
+      localStorage.removeItem('token');
+    }
     return response.data;
   } catch (error) {
     console.error('Logout failed:', error.response ? error.response.data : error.message);
@@ -154,7 +164,7 @@ export const getLeavesByAdmin = async (req, res)=>{
   }
 }
 
-export const approveOrRejectLeave = async (leaveId, action) => {
+export const approveOrRejectLeave = async (leaveId, action, reason = '') => {
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found');
@@ -162,7 +172,7 @@ export const approveOrRejectLeave = async (leaveId, action) => {
 
   try {
     const response = await axios.post(`${API_URL}/leave-request/approve-reject`, 
-      { leaveId, action },
+      { leaveId, action, reason },  // Include reason in the request body
       {
         headers: {
           Authorization: `Bearer ${token}`

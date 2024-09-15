@@ -18,13 +18,12 @@ import Information from "views/admin/profile/components/Information";
 import { updateProfile } from "api/api";
 
 export default function GeneralInformation(props) {
-  console.log(props.profileData)
-  const {profileData, ...rest } = props;
+  const { profileData, ...rest } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [info, setInfo] = useState({
     "Enrollment Id": profileData.enrollmentId || '',
     Email: profileData.email || '',
-    Year: '2:1', 
+    Year: '2024', 
     Contact: profileData.contactNumber || '',
     "Parent Name": profileData.parentName || '',
     "Parent Contact": profileData.parentContact || '',
@@ -96,8 +95,8 @@ export default function GeneralInformation(props) {
             >
               Save
             </Button>
-          ) : 
-          <Button
+          ) : (
+            <Button
               leftIcon={<EditIcon />}
               backgroundColor="#412AFB"
               _hover={{ backgroundColor: "#3a26d1" }}
@@ -108,39 +107,40 @@ export default function GeneralInformation(props) {
             >
               Edit
             </Button>
-          }
+          )}
         </Flex>
       </Flex>
       {/* Information Section */}
       <SimpleGrid columns="2" gap="20px">
-  {Object.keys(info)
-    .filter((key) => isEditing || info[key]) // Show only non-empty fields in view mode
-    .map((key) => (
-      isEditing ? (
-        <FormControl key={key}>
-          <FormLabel color={textColorPrimary} fontSize="sm" fontWeight="bold">
-            {key}
-          </FormLabel>
-          <Input
-            name={key}
-            type={key === "Enrollment Id" ? "number" : "text"}
-            value={info[key]}
-            onChange={handleChange}
-            placeholder={`Enter ${key}`}
-            boxShadow={cardShadow}
-          />
-        </FormControl>
-      ) : (
-        <Information
-          key={key}
-          boxShadow={cardShadow}
-          title={key}
-          value={info[key]}
-        />
-      )
-    ))}
-</SimpleGrid>
-
+        {Object.keys(info)
+          .filter((key) => 
+            isEditing ? !["Email", "Year", "School", "Enrollment Id"].includes(key) : info[key]
+          )
+          .map((key) => (
+            isEditing ? (
+              <FormControl key={key}>
+                <FormLabel color={textColorPrimary} fontSize="sm" fontWeight="bold">
+                  {key}
+                </FormLabel>
+                <Input
+                  name={key}
+                  type={key === "Enrollment Id" ? "number" : "text"}
+                  value={info[key]}
+                  onChange={handleChange}
+                  placeholder={`Enter ${key}`}
+                  boxShadow={cardShadow}
+                />
+              </FormControl>
+            ) : (
+              <Information
+                key={key}
+                boxShadow={cardShadow}
+                title={key}
+                value={info[key]}
+              />
+            )
+          ))}
+      </SimpleGrid>
     </Card>
   );
 }

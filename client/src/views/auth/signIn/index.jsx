@@ -64,6 +64,7 @@ function SignIn() {
         status: "success",
         duration: 5000,
         isClosable: true,
+        position: 'top-right'
       });
       if (role === 'admin') {
         navigate("/admin");

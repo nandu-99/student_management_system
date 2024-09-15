@@ -16,9 +16,12 @@ import {
   Th,
   Td,
   Text,
+  Link,
+  Flex
 } from '@chakra-ui/react';
 import { MdOutlineSchool, MdOutlineCalendarToday } from 'react-icons/md';
 import ColumnTable from './components/ColumnsTable';
+import ComingSoon from 'components/comingSoon';
 
 // Mock data for attendance
 const mockAttendance = {
@@ -75,60 +78,17 @@ const Attendance = () => {
   };
 
   return (
-    <></>
-    // <Box pt={{ base: '130px', md: '80px', xl: '80px' }} px={4}>
-    //   <SimpleGrid
-    //     columns={{ base: 1, md: 2, lg: 3, '2xl': 6 }}
-    //     gap="20px"
-    //     mb="20px"
-    //   >
-    //     <Box
-    //       p={5}
-    //       shadow="md"
-    //       borderWidth="1px"
-    //       borderRadius="md"
-    //       bg="white"
-    //     >
-    //       <Text fontSize="lg" fontWeight="bold">Total Attendance</Text>
-    //       <Text fontSize="xl">88%</Text>
-    //     </Box>
-    //     <Box
-    //       p={5}
-    //       shadow="md"
-    //       borderWidth="1px"
-    //       borderRadius="md"
-    //       bg="white"
-    //     >
-    //       <Text fontSize="lg" fontWeight="bold">Classes Attended</Text>
-    //       <Text fontSize="xl">85/100</Text>
-    //     </Box>
-    //   </SimpleGrid>
-
-    //   {/* Filter Button */}
-    //   <Menu>
-    //     <MenuButton
-    //       as={Button}
-    //       bg="#412AFB"
-    //       color="white"
-    //       _hover={{ bg: '#341FB0' }}
-    //       _active={{ bg: '#2E1B9A' }}
-    //       mb="20px"
-    //       leftIcon={<Icon as={MdOutlineCalendarToday} color='white' />}
-    //     >
-    //       {selectedSemester}
-    //     </MenuButton>
-    //     <MenuList>
-    //       {Object.keys(mockAttendance).map((semester) => (
-    //         <MenuItem key={semester} onClick={() => handleSemesterChange(semester)}>
-    //           {semester}
-    //         </MenuItem>
-    //       ))}
-    //     </MenuList>
-    //   </Menu>
-
-    //   {/* Attendance Table */}
-    //   <ColumnTable tableData={attendanceData} />
-    // </Box>
+    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+      <ComingSoon/>
+      <Flex direction="column" align="center">
+        <Text fontSize="lg" mb="10px">Till then explore</Text>
+        <Flex direction={{ base: "column", md: "row" }} wrap="wrap" gap="10px">
+          <Link href="/admin/leaves" color={brandColor} fontSize="md" p="10px" borderRadius="md" bg={boxBg} _hover={{ bg: "blue.500", color: "white" }}>Leaves</Link>
+          <Link href="/admin/profile" color={brandColor} fontSize="md" p="10px" borderRadius="md" bg={boxBg} _hover={{ bg: "blue.500", color: "white" }}>Profile</Link>
+          <Link href="/admin/default" color={brandColor} fontSize="md" p="10px" borderRadius="md" bg={boxBg} _hover={{ bg: "blue.500", color: "white" }}>Main Dashboard</Link>
+        </Flex>
+      </Flex>
+    </Box>
   );
 };
 

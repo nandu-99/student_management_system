@@ -16,9 +16,12 @@ import {
   Th,
   Td,
   Text,
+  Link, 
+  Flex
 } from "@chakra-ui/react";
 import { MdOutlineSchool, MdOutlineCalendarToday } from "react-icons/md";
 import ColumnTable from "./components/ColumnsTable";
+import ComingSoon from "components/comingSoon";
 
 const mockResults = {
   "Semester 1": [
@@ -144,7 +147,17 @@ const Settings = () => {
     //   {/* Results Table */}
     //   <ColumnTable tableData={semesterResults} />
     // </Box>
-    <></>
+    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+      <ComingSoon/>
+      <Flex direction="column" align="center">
+        <Text fontSize="lg" mb="10px">Till then explore</Text>
+        <Flex direction={{ base: "column", md: "row" }} wrap="wrap" gap="10px">
+        <Link href="/admin/leaves" color={brandColor} fontSize="md" p="10px" borderRadius="md" bg={boxBg} _hover={{ bg: "blue.500", color: "white" }}>Leaves</Link>
+          <Link href="/admin/profile" color={brandColor} fontSize="md" p="10px" borderRadius="md" bg={boxBg} _hover={{ bg: "blue.500", color: "white" }}>Profile</Link>
+          <Link href="/admin/default" color={brandColor} fontSize="md" p="10px" borderRadius="md" bg={boxBg} _hover={{ bg: "blue.500", color: "white" }}>Main Dashboard</Link>
+        </Flex>
+      </Flex>
+    </Box>
   );
 };
 

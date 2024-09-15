@@ -2,8 +2,8 @@
 
 export const barChartDataDailyTraffic = [
   {
-    name: "Daily Traffic",
-    data: [20, 30, 40, 20, 45, 50, 30],
+    name: "Total Leaves",
+    data: [10, 20, 30, 10, 35, 20],
   },
 ];
 
@@ -27,8 +27,8 @@ export const barChartOptionsDailyTraffic = {
     theme: "dark",
   },
   xaxis: {
-    categories: ["00", "04", "08", "12", "14", "16", "18"],
-    show: false,
+    categories: ["2019", "2020", "2021", "2022", "2023", "2024"],
+    show: true,
     labels: {
       show: true,
       style: {
@@ -45,8 +45,7 @@ export const barChartOptionsDailyTraffic = {
     },
   },
   yaxis: {
-    show: false,
-    color: "black",
+    show: true,
     labels: {
       show: true,
       style: {
@@ -56,7 +55,7 @@ export const barChartOptionsDailyTraffic = {
     },
   },
   grid: {
-    show: false,
+    show: true,
     strokeDashArray: 5,
     yaxis: {
       lines: {
@@ -103,22 +102,24 @@ export const barChartOptionsDailyTraffic = {
   },
 };
 
+
 // Consumption Users Reports
 
 export const barChartDataConsumption = [
   {
-    name: "PRODUCT A",
-    data: [400, 370, 330, 390, 320, 350, 360, 320, 380],
+    name: "Sick Leave",
+    data: [100, 90, 80, 70, 60, 50, 40], // Example data for sick leave
   },
   {
-    name: "PRODUCT B",
-    data: [400, 370, 330, 390, 320, 350, 360, 320, 380],
+    name: "Vacation",
+    data: [90, 30, 70, 60, 50, 80, 30], // Example data for vacation
   },
   {
-    name: "PRODUCT C",
-    data: [400, 370, 330, 390, 320, 350, 360, 320, 380],
+    name: "Personal",
+    data: [80, 70, 60, 40, 40, 80, 90], // Example data for personal
   },
 ];
+
 
 export const barChartOptionsConsumption = {
   chart: {
@@ -141,8 +142,8 @@ export const barChartOptionsConsumption = {
     theme: "dark",
   },
   xaxis: {
-    categories: ["17", "18", "19", "20", "21", "22", "23", "24", "25"],
-    show: false,
+    categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    show: true,
     labels: {
       show: true,
       style: {
@@ -159,10 +160,10 @@ export const barChartOptionsConsumption = {
     },
   },
   yaxis: {
-    show: false,
+    show: true,
     color: "black",
     labels: {
-      show: false,
+      show: true,
       style: {
         colors: "#A3AED0",
         fontSize: "14px",
@@ -170,7 +171,6 @@ export const barChartOptionsConsumption = {
       },
     },
   },
-
   grid: {
     borderColor: "rgba(163, 174, 208, 0.3)",
     show: true,
@@ -191,26 +191,29 @@ export const barChartOptionsConsumption = {
   },
   fill: {
     type: "solid",
-    colors: ["#5E37FF", "#6AD2FF", "#E1E9F8"],
+    colors: ["#4318FF", "#6AD2FF", "#6F4EFC"],
   },
   legend: {
-    show: false,
+    show: true,
+    position: "top",
   },
-  colors: ["#5E37FF", "#6AD2FF", "#E1E9F8"],
+  colors: ["#4318FF", "#6AD2FF", "#6F4EFC"],
   dataLabels: {
     enabled: false,
   },
   plotOptions: {
     bar: {
-      borderRadius: 10,
+      borderRadius: 0, // Ensures rectangular bars
       columnWidth: "20px",
     },
   },
 };
 
+
+
 export const pieChartOptions = {
-  labels: ["Your files", "System", "Empty"],
-  colors: ["#4318FF", "#6AD2FF", "#EFF4FB"],
+  labels: ["Sick Leave", "Vacation", "Personal"],
+  colors: ["#4318FF", "#6AD2FF", "#6F4EFC"],
   chart: {
     width: "50px",
   },
@@ -239,7 +242,7 @@ export const pieChartOptions = {
     },
   },
   fill: {
-    colors: ["#4318FF", "#6AD2FF", "#EFF4FB"],
+    colors: ["#4318FF", "#6AD2FF", "#6F4EFC"],
   },
   tooltip: {
     enabled: true,
@@ -247,7 +250,62 @@ export const pieChartOptions = {
   },
 };
 
-export const pieChartData = [63, 25, 12];
+export const pieChartData = [7, 2, 3];
+
+
+export const studentpieChartOptions = {
+  labels: [
+    "Indian Polity and Administration",
+    "Tech and Society",
+    "Environment and System Thinking",
+    "Leadership Colloquium 2",
+    "Community Engagement",
+    "Data Structures and Algorithms",
+    "Web Programming",
+    "Software Engineering"
+  ],
+  colors: ["#003366", "#004080", "#0066cc", "#3399ff", "#66ccff", "#99ccff", "#cce5ff", "#e6f2ff"],
+  chart: {
+    width: "50px",
+  },
+  states: {
+    hover: {
+      filter: {
+        type: "none",
+      },
+    },
+  },
+  legend: {
+    show: true,
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  hover: { mode: null },
+  plotOptions: {
+    pie: {
+      expandOnClick: true,
+    },
+  },
+  fill: {
+    colors: ["#003366", "#004080", "#0066cc", "#3399ff", "#66ccff", "#99ccff", "#cce5ff", "#e6f2ff"],
+  },
+  tooltip: {
+    enabled: true,
+    theme: "dark",
+  },
+};
+
+export const studentpieChartData = [
+  28, // Indian Polity and Administration
+  29, // Tech and Society
+  30, // Environment and System Thinking
+  27, // Leadership Colloquium 2
+  28, // Community Engagement
+  27, // Data Structures and Algorithms
+  30, // Web Programming
+  30  // Software Engineering
+];
 
 // Total Spent Default
 

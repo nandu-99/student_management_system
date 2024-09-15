@@ -29,7 +29,7 @@ export default function DailyTraffic(props) {
               color='secondaryGray.600'
               fontSize='sm'
               fontWeight='500'>
-              Daily Traffic
+                Batch Wise Leaves
             </Text>
           </Flex>
           <Flex align='end'>
@@ -38,23 +38,23 @@ export default function DailyTraffic(props) {
               fontSize='34px'
               fontWeight='700'
               lineHeight='100%'>
-              2.579
+              125
             </Text>
             <Text
               ms='6px'
               color='secondaryGray.600'
               fontSize='sm'
               fontWeight='500'>
-              Visitors
+              Leaves Applied
             </Text>
           </Flex>
         </Flex>
-        <Flex align='center'>
+        {/* <Flex align='center'>
           <Icon as={RiArrowUpSFill} color='green.500' />
           <Text color='green.500' fontSize='sm' fontWeight='700'>
             +2.45%
           </Text>
-        </Flex>
+        </Flex> */}
       </Flex>
       <Box h='240px' mt='auto'>
         <BarChart
