@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000'; 
+const API_URL = 'https://nst-ru-sms-server.vercel.app'; 
 
 export const login = async (email, password, role) => {
   try {
