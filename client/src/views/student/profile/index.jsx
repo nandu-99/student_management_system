@@ -1,5 +1,5 @@
-import { Box, Grid, Spinner } from "@chakra-ui/react";
-import { useState, useEffect } from 'react';
+import { Box, Grid } from "@chakra-ui/react";
+import {useState, useEffect} from 'react';
 import {
   Button,
   Checkbox,
@@ -20,46 +20,38 @@ import {
 // Custom components
 import Banner from "views/admin/profile/components/Banner";
 import General from "views/admin/profile/components/General";
+import Notifications from "views/admin/profile/components/Notifications";
+import Projects from "views/admin/profile/components/Projects";
+import Storage from "views/admin/profile/components/Storage";
+import Upload from "views/admin/profile/components/Upload";
 import { getProfile } from "api/api";
 
 // Assets
 import banner from "assets/img/auth/banner.png";
 import avatar from "assets/img/avatars/avatar7.png";
+import React from "react";
+import { from } from "stylis";
 
 export default function Overview() {
   const [profileData, setProfileData] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const data = await getProfile();
+        console.log(data)
         setProfileData(data);
       } catch (error) {
         console.error('Failed to fetch profile data:', error.message);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchProfile();
   }, []);
 
-  if (loading) {
-    return (
-      <Flex align="center" justify="center" height="100vh" flexDirection="column">
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          size="xl"
-          color="blue.500" 
-        />
-        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
-      </Flex>
-    ); 
+  if (!profileData) {
+    return <Text>Loading...</Text>; // Optional: Add a loading state
   }
-
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <Grid
@@ -98,6 +90,7 @@ export default function Overview() {
         }}
         gap={{ base: "20px", xl: "20px" }}
       >
+        {/* Other components can be added here */}
       </Grid>
     </Box>
   );

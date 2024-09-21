@@ -161,6 +161,7 @@ export default function ColumnTable({ tableData }) {
         >
           Results Overview
         </Text>
+        <Menu />
       </Flex>
       <Box>
         <Table variant="simple" color="gray.500" mb="24px" mt="12px">

@@ -1,57 +1,61 @@
-import { Box, Grid, Text, Flex, Spinner } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { Box, Grid } from "@chakra-ui/react";
+import {useState, useEffect} from 'react';
+import {
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Icon,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Select,
+  Text,
+  useColorModeValue,
+  useToast,
+} from "@chakra-ui/react";
+
 // Custom components
 import Banner from "views/admin/profile/components/Banner";
 import General from "views/admin/profile/components/General";
+import Notifications from "views/admin/profile/components/Notifications";
+import Projects from "views/admin/profile/components/Projects";
+import Storage from "views/admin/profile/components/Storage";
+import Upload from "views/admin/profile/components/Upload";
 import { getProfile } from "api/api";
 
 // Assets
 import banner from "assets/img/auth/banner.png";
 import avatar from "assets/img/avatars/avatar7.png";
 import React from "react";
+import { from } from "stylis";
 
 export default function Overview() {
   const [profileData, setProfileData] = useState(null);
-  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const data = await getProfile();
-        console.log(data);
+        console.log(data)
         setProfileData(data);
       } catch (error) {
-        console.error("Failed to fetch profile data:", error.message);
-      } finally {
-        setLoading(false); // Stop loading
+        console.error('Failed to fetch profile data:', error.message);
       }
     };
 
     fetchProfile();
   }, []);
 
-  if (loading) {
-    return (
-      <Flex align="center" justify="center" height="100vh" flexDirection="column">
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          size="xl"
-          color="blue.500"
-        />
-        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
-      </Flex>
-    );
-  }
-
   if (!profileData) {
-    return <Text>No profile data available.</Text>; // Optional: Handle no data case
+    return <Text>Loading...</Text>; // Optional: Add a loading state
   }
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <Grid
-        templateColumns="1fr"
+        templateColumns="1fr" 
         templateRows="auto"
         gap={{ base: "20px", xl: "20px" }}
       >

@@ -22,7 +22,6 @@ import Contests from 'views/student/contests';
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
 import Settings from 'views/student/results';
-import SignOut from 'views/auth/signIn/signout';
 
 const routes = [
   {
@@ -88,27 +87,14 @@ const routes = [
     path: '/profile',
     icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
     component: <Profile />,
-  }
-];
-
-const isLoggedIn = localStorage.getItem('token');
-
-if (isLoggedIn) {
-  routes.push({
-    name: 'Sign Out',
-    layout: '/student',
-    path: '/sign-out',
-    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
-    component: <SignOut/>
-  });
-} else {
-  routes.push({
+  },
+  {
     name: 'Sign In',
     layout: '/auth',
     path: '/sign-in',
     icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
     component: <SignInCentered />,
-  });
-}
+  }
+];
 
 export default routes;
