@@ -5,6 +5,9 @@ import {
   SimpleGrid,
   useColorModeValue,
   Icon,
+  Flex,
+  Spinner,
+  Text,
 } from "@chakra-ui/react";
 import MiniStatistics from "components/card/MiniStatistics";
 import IconBox from "components/icons/IconBox";
@@ -20,16 +23,18 @@ import { getLeavesByAdmin, getUpcomingEvents } from "api/api";
 const CalendarPage = () => {
   const brandColor = useColorModeValue("brand.500", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
-  const [selectedStat, setSelectedStat] = useState('Leaves Applied Today'); // default selected
+  const [selectedStat, setSelectedStat] = useState('Leaves Applied Today');
   const [tableData, setTableData] = useState([]);
-  const [events, setEvents] = useState([]); // New state for upcoming holidays
+  const [events, setEvents] = useState([]);
   const [todayLeavesDatalength, settodayLeavesDatalength] = useState(0);
   const [totalLeavesDatalength, settotalLeavesDatalenght] = useState(0);
-  const [pendingApprovals, setPendingApprovals] = useState(0); // New state for pending approvals
+  const [pendingApprovals, setPendingApprovals] = useState(0);
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchLeavesData = async () => {
       try {
+        setLoading(true); // Start loading
         let eventsResponse = await getUpcomingEvents();
 
         const transformedEvents = eventsResponse.map((event) => ({
@@ -42,9 +47,8 @@ const CalendarPage = () => {
                 ).toLocaleDateString()}`
               : `${new Date(event.date).toLocaleDateString()}`,
         }));
-        setEvents(transformedEvents); 
+        setEvents(transformedEvents);
 
-        // Fetch leaves data
         const response = await getLeavesByAdmin();
         const data = response.leaveRequests;
 
@@ -52,7 +56,7 @@ const CalendarPage = () => {
           id: request.id,
           studentEnrollmentNumber: request.enrollmentNumber,
           studentName: request.studentName,
-          batch: "2027", // Hardcoded as per your requirement
+          batch: "2027",
           leaveType: request.leaveType,
           status: request.status,
           date:
@@ -68,26 +72,26 @@ const CalendarPage = () => {
 
         setTableData(transformedData);
 
-        // Filter today's leaves
         const todayLeaves = filterData(transformedData, "Leaves Applied Today");
-        const totalLeaves = filterData(transformedData, 'Total Leaves')
+        const totalLeaves = filterData(transformedData, 'Total Leaves');
         settotalLeavesDatalenght(totalLeaves.length);
         settodayLeavesDatalength(todayLeaves.length);
 
-        // Calculate pending approvals
         const pendingCount = data.filter(
           (request) => request.status === "Pending"
         ).length;
         setPendingApprovals(pendingCount);
+
+        setLoading(false); // Data fetched, stop loading
       } catch (error) {
         console.error("Error fetching data: ", error);
+        setLoading(false); // Stop loading even in case of error
       }
     };
 
     fetchLeavesData();
   }, []);
 
-  // Function to filter data based on selected statistic
   const filterData = (data, stat) => {
     const today = new Date().toLocaleDateString();
 
@@ -109,7 +113,7 @@ const CalendarPage = () => {
     }
 
     if (stat === "Upcoming Holidays") {
-      return events; // Use events when Upcoming Holidays is selected
+      return events;
     }
 
     return data;
@@ -119,13 +123,27 @@ const CalendarPage = () => {
     setSelectedStat(name);
   };
 
-  // Filter tableData based on the selected statistic
   const filteredData = filterData(tableData, selectedStat);
+
+  if (loading) {
+    return (
+      <Flex align="center" justify="center" height="100vh" flexDirection="column">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          size="xl"
+          color="blue.500"
+        />
+        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
+      </Flex>
+    );
+  }
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid
-        columns={{ base: 1, md: 2, lg: 4 }} // Adjusted to 4 columns
+        columns={{ base: 1, md: 2, lg: 4 }}
         gap="20px"
         mb="20px"
       >
@@ -139,7 +157,7 @@ const CalendarPage = () => {
             />
           }
           name="Total Leaves"
-          value={totalLeavesDatalength} // Display total number of leaves
+          value={totalLeavesDatalength}
           isSelected={selectedStat === "Total Leaves"}
           onClick={() => handleSelect("Total Leaves")}
         />
@@ -149,13 +167,11 @@ const CalendarPage = () => {
               w="56px"
               h="56px"
               bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdPendingActions} color={brandColor} />
-              }
+              icon={<Icon w="32px" h="32px" as={MdPendingActions} color={brandColor} />}
             />
           }
           name="Pending Approvals"
-          value={pendingApprovals} // Display pending approvals count
+          value={pendingApprovals}
           isSelected={selectedStat === "Pending Leave Approvals"}
           onClick={() => handleSelect("Pending Leave Approvals")}
         />
@@ -183,7 +199,7 @@ const CalendarPage = () => {
             />
           }
           name="Upcoming Holidays"
-          value={events.length} // Display number of upcoming holidays
+          value={events.length}
           isSelected={selectedStat === "Upcoming Holidays"}
           onClick={() => handleSelect("Upcoming Holidays")}
         />

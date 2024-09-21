@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Text, useColorModeValue, Center, Spinner } from "@chakra-ui/react";
 import Card from "components/card/Card";
 import { getContests } from "api/api";
 
@@ -19,12 +19,9 @@ export default function UpcomingContests() {
     const fetchContests = async () => {
       try {
         const data = await getContests();
-        // Filter contests to show only those upcoming
         const today = new Date();
         const upcomingContests = data.filter(contest => new Date(contest.date) > today);
-        // Sort contests by date
         upcomingContests.sort((a, b) => new Date(a.date) - new Date(b.date));
-        // Limit to the next 3 contests
         setContests(upcomingContests.slice(0, 3));
       } catch (err) {
         setError(err.message);
@@ -36,7 +33,21 @@ export default function UpcomingContests() {
     fetchContests();
   }, []);
 
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) {
+    return (
+      <Flex align="center" justify="center" height="100vh" flexDirection="column">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          size="xl"
+          color="blue.500" 
+        />
+        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
+      </Flex>
+    ); 
+  }
+
   if (error) return <Text color="red.500">Error: {error}</Text>;
 
   return (

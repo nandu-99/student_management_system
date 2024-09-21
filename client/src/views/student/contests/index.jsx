@@ -9,14 +9,14 @@ import {
   MenuList,
   MenuItem,
   Button,
+  Flex,
+  Spinner,
+  Text
 } from "@chakra-ui/react";
 import MiniStatistics from "components/card/MiniStatistics";
 import IconBox from "components/icons/IconBox";
 import ColumnTable from "./components/ColumnsTable";
-import {
-  MdOutlineAssessment,
-  MdOutlineEvent,
-} from "react-icons/md";
+import { MdOutlineAssessment, MdOutlineEvent } from "react-icons/md";
 import { getContests } from "api/api";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
@@ -27,6 +27,7 @@ const Contests = () => {
   const [selectedSubject, setSelectedSubject] = useState('All Subjects');
   const [upcomingContests, setUpcomingContests] = useState([]);
   const [previousContests, setPreviousContests] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
 
   const handleSelect = (name) => {
     setSelectedStat(name);
@@ -38,17 +39,18 @@ const Contests = () => {
 
   useEffect(() => {
     const fetchContests = async () => {
+      setLoading(true); // Start loading
       try {
         const data = await getContests();
         const today = new Date();
-        const filteredData = data.filter(contest => 
+        const filteredData = data.filter(contest =>
           selectedSubject === 'All Subjects' || contest.course === selectedSubject
         );
 
         const upcoming = filteredData.filter(contest => new Date(contest.date) >= today)
-          .sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by date ascending
+          .sort((a, b) => new Date(a.date) - new Date(b.date));
         const previous = filteredData.filter(contest => new Date(contest.date) < today)
-          .sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
 
         const formatData = (data) => data.map(contest => ({
           name: contest.name,
@@ -61,6 +63,8 @@ const Contests = () => {
         setPreviousContests(formatData(previous));
       } catch (error) {
         console.error("Error fetching contests:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -69,9 +73,23 @@ const Contests = () => {
 
   const tableData = selectedStat === 'Upcoming Contests' ? upcomingContests : previousContests;
 
+  if (loading) {
+    return (
+      <Flex align="center" justify="center" height="100vh" flexDirection="column">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          size="xl"
+          color="blue.500" 
+        />
+        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
+      </Flex>
+    ); 
+  }
+
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      {/* Filter Button */}
       <Menu>
         <MenuButton
           as={Button}
@@ -93,12 +111,10 @@ const Contests = () => {
         </MenuList>
       </Menu>
 
-      {/* Statistics */}
       <SimpleGrid
         columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
         gap="20px"
         mb="20px">
-        {/* Previous Contests */}
         <MiniStatistics
           startContent={
             <IconBox
@@ -114,7 +130,6 @@ const Contests = () => {
           isSelected={selectedStat === 'Previous Contests'}
           onClick={() => handleSelect('Previous Contests')}
         />
-        {/* Upcoming Contests */}
         <MiniStatistics
           startContent={
             <IconBox

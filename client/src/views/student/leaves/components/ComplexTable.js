@@ -19,7 +19,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import Card from 'components/card/Card';
-import Menu from 'components/menu/MainMenu';
 import * as React from 'react';
 import { MdCancel, MdCheckCircle, MdPending } from 'react-icons/md'; 
 
@@ -187,7 +186,7 @@ export default function ComplexTable({ tableData, type }) {
         >
           {type}
         </Text>
-        <Menu />
+        {/* Removed Menu component */}
       </Flex>
       <Box>
         {tableData.length === 0 ? (
