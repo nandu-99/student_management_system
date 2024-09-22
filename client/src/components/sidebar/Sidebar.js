@@ -26,8 +26,8 @@ import PropTypes from "prop-types";
 import { IoMenuOutline } from "react-icons/io5";
 
 function Sidebar(props) {
-  console.log(props)
   const { routes } = props;
+  const filteredRoutes = routes.filter(route => route.name !== "Sign In" && route.path !== "/sign-in");
 
   let variantChange = "0.2s linear";
   let shadow = useColorModeValue(
@@ -55,7 +55,7 @@ function Sidebar(props) {
           renderTrackVertical={renderTrack}
           renderThumbVertical={renderThumb}
           renderView={renderView}>
-          <Content routes={routes} />
+          <Content routes={filteredRoutes} />
         </Scrollbars>
       </Box>
     </Box>
@@ -71,6 +71,7 @@ export function SidebarResponsive(props) {
   const btnRef = React.useRef();
 
   const { routes } = props;
+  const filteredRoutes = routes.filter(route => route.name !== "Sign In" && route.path !== "/sign-in");
   // let isWindows = navigator.platform.startsWith("Win");
   //  BRAND
 
@@ -106,7 +107,7 @@ export function SidebarResponsive(props) {
               renderTrackVertical={renderTrack}
               renderThumbVertical={renderThumb}
               renderView={renderView}>
-              <Content routes={routes} />
+              <Content routes={filteredRoutes} />
             </Scrollbars>
           </DrawerBody>
         </DrawerContent>

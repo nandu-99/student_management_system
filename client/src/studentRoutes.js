@@ -22,6 +22,7 @@ import Contests from 'views/student/contests';
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
 import Settings from 'views/student/results';
+import SignOut from 'views/auth/signout';
 
 const routes = [
   {
@@ -94,6 +95,13 @@ const routes = [
     path: '/sign-in',
     icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
     component: <SignInCentered />,
+  },
+  {
+    name: 'Sign Out',
+    layout: '/student',
+    path: '/sign-out',
+    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+    component:  <SignOut />,
   }
 ];
 
