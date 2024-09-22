@@ -142,7 +142,7 @@ export default function ColumnTable(props) {
         >
           Upcoming Contests
         </Text>
-        <Menu />
+        {/* <Menu /> */}
       </Flex>
       <Box>
         <Table variant="simple" color="gray.500" mb="24px" mt="12px">

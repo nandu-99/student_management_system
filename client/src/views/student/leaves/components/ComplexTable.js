@@ -187,7 +187,7 @@ export default function ComplexTable({ tableData, type }) {
         >
           {type}
         </Text>
-        <Menu />
+        {/* <Menu /> */}
       </Flex>
       <Box>
         {tableData.length === 0 ? (
