@@ -21,6 +21,7 @@ import PropTypes from 'prop-types';
 import { MdNotificationsNone } from 'react-icons/md';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import routes from 'routes';
+import studentRoutes from 'studentRoutes'
 
 export default function HeaderLinks(props) {
   const { secondary } = props;
@@ -36,6 +37,8 @@ export default function HeaderLinks(props) {
     '14px 17px 40px 4px rgba(112, 144, 176, 0.06)',
   );
   const navigate = useNavigate();
+  const role = localStorage.getItem('role');
+  const currentRoutes = role === 'student' ? studentRoutes : routes;
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -59,9 +62,8 @@ export default function HeaderLinks(props) {
     }
   };
 
-  const handleProfile = ()=>{
-    const role = localStorage.getItem('role')
-    navigate(`/${role}/profile`)
+  const handleProfile = () => {
+    navigate(`/${role}/profile`);
   }
 
   return (
@@ -75,7 +77,7 @@ export default function HeaderLinks(props) {
       borderRadius="30px"
       boxShadow={shadow}
     >
-      <SearchBar
+      {/* <SearchBar
         mb={() => {
           if (secondary) {
             return { base: '10px', md: 'unset' };
@@ -84,10 +86,10 @@ export default function HeaderLinks(props) {
         }}
         me="10px"
         borderRadius="30px"
-      />
-      <SidebarResponsive routes={routes} />
-      <Menu>
-        <MenuButton p="0px">
+      /> */}
+      <SidebarResponsive routes={currentRoutes} />
+      {/* <Menu> */}
+        {/* <MenuButton p="0px">
           <Icon
             mt="6px"
             as={MdNotificationsNone}
@@ -96,7 +98,7 @@ export default function HeaderLinks(props) {
             h="18px"
             me="10px"
           />
-        </MenuButton>
+        </MenuButton> */}
         {/* <MenuList
           boxShadow={shadow}
           p="20px"
@@ -143,7 +145,7 @@ export default function HeaderLinks(props) {
             </MenuItem>
           </Flex>
         </MenuList> */}
-      </Menu>
+      {/* </Menu> */}
 
       <Button
         variant="no-hover"
