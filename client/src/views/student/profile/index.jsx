@@ -1,21 +1,5 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, Text, Spinner, Flex } from "@chakra-ui/react";
 import {useState, useEffect} from 'react';
-import {
-  Button,
-  Checkbox,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Icon,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Select,
-  Text,
-  useColorModeValue,
-  useToast,
-} from "@chakra-ui/react";
 
 // Custom components
 import Banner from "views/admin/profile/components/Banner";
@@ -34,6 +18,7 @@ import { from } from "stylis";
 
 export default function Overview() {
   const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -43,14 +28,27 @@ export default function Overview() {
         setProfileData(data);
       } catch (error) {
         console.error('Failed to fetch profile data:', error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProfile();
   }, []);
 
-  if (!profileData) {
-    return <Text>Loading...</Text>; // Optional: Add a loading state
+  if (loading) {
+    return (
+      <Flex align="center" justify="center" height="100vh" flexDirection="column">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          size="xl"
+          color="blue.500" 
+        />
+        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
+      </Flex>
+    ); 
   }
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>

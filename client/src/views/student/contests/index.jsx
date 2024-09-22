@@ -8,6 +8,9 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Flex,
+  Spinner,
+  Text,
   Button,
 } from "@chakra-ui/react";
 import MiniStatistics from "components/card/MiniStatistics";
@@ -27,6 +30,7 @@ const Contests = () => {
   const [selectedSubject, setSelectedSubject] = useState('All Subjects');
   const [upcomingContests, setUpcomingContests] = useState([]);
   const [previousContests, setPreviousContests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleSelect = (name) => {
     setSelectedStat(name);
@@ -38,6 +42,7 @@ const Contests = () => {
 
   useEffect(() => {
     const fetchContests = async () => {
+      setLoading(true); 
       try {
         const data = await getContests();
         const today = new Date();
@@ -61,6 +66,8 @@ const Contests = () => {
         setPreviousContests(formatData(previous));
       } catch (error) {
         console.error("Error fetching contests:", error);
+      }finally {
+        setLoading(false);
       }
     };
 
@@ -68,6 +75,21 @@ const Contests = () => {
   }, [selectedSubject]);
 
   const tableData = selectedStat === 'Upcoming Contests' ? upcomingContests : previousContests;
+
+  if (loading) {
+    return (
+      <Flex align="center" justify="center" height="100vh" flexDirection="column">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          size="xl"
+          color="blue.500" 
+        />
+        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
+      </Flex>
+    ); 
+  }
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>

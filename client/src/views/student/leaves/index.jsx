@@ -5,6 +5,10 @@ import {
   SimpleGrid,
   useColorModeValue,
   Icon,
+  Text, 
+  Spinner, 
+  Center,
+  Flex
 } from "@chakra-ui/react";
 import MiniCalendar from "components/calendar/MiniCalendar";
 import MiniStatistics from "components/card/MiniStatistics";
@@ -24,11 +28,12 @@ const CalendarPage = () => {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const [selectedStat, setSelectedStat] = useState('Recent Leave History'); // default selected
   const [totalLeaves, setTotalLeaves] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       let data;
       let leaveData;
       data = await getRecentLeaveHistory();
@@ -56,6 +61,7 @@ const CalendarPage = () => {
       }else{
       setTableData(formattedLeaveData)
       };
+      setLoading(false);
     };
     fetchData();
   }, [selectedStat]);
@@ -128,7 +134,27 @@ const CalendarPage = () => {
           />
         </Box>
         <Box maxH="620px" overflowY="auto">
-          <ComplexTable tableData={tableData} type={selectedStat} />
+        {loading ? (
+            <Flex
+              align="center"
+              justify="center"
+              height="100vh"
+              flexDirection="column"
+            >
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                size="xl"
+                color="blue.500"
+              />
+              <Text fontSize="lg" mt="4" color="gray.600">
+                Loading, please wait...
+              </Text>
+            </Flex>
+          ) : (
+            <ComplexTable tableData={tableData} type={selectedStat} />
+          )}
         </Box>
       </Grid>
     </Box>

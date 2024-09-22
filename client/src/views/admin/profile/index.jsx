@@ -1,63 +1,60 @@
-import { Box, Grid } from "@chakra-ui/react";
-import {useState, useEffect} from 'react';
-import {
-  Button,
-  Checkbox,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Icon,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Select,
-  Text,
-  useColorModeValue,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Grid, Flex, Spinner, Text } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 
 // Custom components
-import Banner from "views/admin/profile/components/Banner";
-import General from "views/admin/profile/components/General";
-import Notifications from "views/admin/profile/components/Notifications";
-import Projects from "views/admin/profile/components/Projects";
-import Storage from "views/admin/profile/components/Storage";
-import Upload from "views/admin/profile/components/Upload";
-import { getProfile } from "api/api";
+import Banner from 'views/admin/profile/components/Banner';
+import General from 'views/admin/profile/components/General';
+import { getProfile } from 'api/api';
 
 // Assets
-import banner from "assets/img/auth/banner.png";
-import avatar from "assets/img/avatars/avatar7.png";
-import React from "react";
-import { from } from "stylis";
+import banner from 'assets/img/auth/banner.png';
+import avatar from 'assets/img/avatars/avatar7.png';
+import React from 'react';
 
 export default function Overview() {
   const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const data = await getProfile();
-        console.log(data)
+        console.log(data);
         setProfileData(data);
       } catch (error) {
         console.error('Failed to fetch profile data:', error.message);
+      } finally {
+        setLoading(false); 
       }
     };
 
     fetchProfile();
   }, []);
 
+  if (loading) {
+    return (
+      <Flex align="center" justify="center" height="100vh" flexDirection="column">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          size="xl"
+          color="blue.500"
+        />
+        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
+      </Flex>
+    );
+  }
+
   if (!profileData) {
     return <Text>Loading...</Text>; // Optional: Add a loading state
   }
   return (
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <Grid
-        templateColumns="1fr" 
+        templateColumns="1fr"
         templateRows="auto"
-        gap={{ base: "20px", xl: "20px" }}
+        gap={{ base: '20px', xl: '20px' }}
       >
         <Banner
           gridArea="1 / 1 / 2 / 2"
@@ -79,16 +76,16 @@ export default function Overview() {
       <Grid
         mb="20px"
         templateColumns={{
-          base: "1fr",
-          lg: "repeat(2, 1fr)",
-          "2xl": "1.34fr 1.62fr 1fr",
+          base: '1fr',
+          lg: 'repeat(2, 1fr)',
+          '2xl': '1.34fr 1.62fr 1fr',
         }}
         templateRows={{
-          base: "1fr",
-          lg: "repeat(2, 1fr)",
-          "2xl": "1fr",
+          base: '1fr',
+          lg: 'repeat(2, 1fr)',
+          '2xl': '1fr',
         }}
-        gap={{ base: "20px", xl: "20px" }}
+        gap={{ base: '20px', xl: '20px' }}
       >
         {/* Other components can be added here */}
       </Grid>

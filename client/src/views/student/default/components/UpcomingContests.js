@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Text, useColorModeValue, Center, Spinner } from "@chakra-ui/react";
 import Card from "components/card/Card";
 import { getContests } from "api/api";
 
@@ -36,7 +36,20 @@ export default function UpcomingContests() {
     fetchContests();
   }, []);
 
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) {
+    return (
+      <Flex align="center" justify="center" height="100vh" flexDirection="column">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          size="xl"
+          color="blue.500" 
+        />
+        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
+      </Flex>
+    ); 
+  }
   if (error) return <Text color="red.500">Error: {error}</Text>;
 
   return (

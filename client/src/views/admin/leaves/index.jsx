@@ -5,6 +5,9 @@ import {
   SimpleGrid,
   useColorModeValue,
   Icon,
+  Flex,
+  Spinner,
+  Text,
 } from "@chakra-ui/react";
 import MiniStatistics from "components/card/MiniStatistics";
 import IconBox from "components/icons/IconBox";
@@ -26,10 +29,12 @@ const CalendarPage = () => {
   const [todayLeavesDatalength, settodayLeavesDatalength] = useState(0);
   const [totalLeavesDatalength, settotalLeavesDatalenght] = useState(0);
   const [pendingApprovals, setPendingApprovals] = useState(0); // New state for pending approvals
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchLeavesData = async () => {
       try {
+        setLoading(true);
         let eventsResponse = await getUpcomingEvents();
 
         const transformedEvents = eventsResponse.map((event) => ({
@@ -79,6 +84,7 @@ const CalendarPage = () => {
           (request) => request.status === "Pending"
         ).length;
         setPendingApprovals(pendingCount);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -121,6 +127,21 @@ const CalendarPage = () => {
 
   // Filter tableData based on the selected statistic
   const filteredData = filterData(tableData, selectedStat);
+
+  if (loading) {
+    return (
+      <Flex align="center" justify="center" height="100vh" flexDirection="column">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          size="xl"
+          color="blue.500"
+        />
+        <Text fontSize="lg" mt="4" color="gray.600">Loading, please wait...</Text>
+      </Flex>
+    );
+  }
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
