@@ -182,7 +182,7 @@ export default function GeneralInformation(props) {
             boxShadow={cardShadow}
           />
         </FormControl>
-        <FormControl>
+        {/* <FormControl>
           <FormLabel color={textColorPrimary} fontSize="sm" fontWeight="bold">
             Upload File (Optional)
           </FormLabel>
@@ -210,7 +210,7 @@ export default function GeneralInformation(props) {
             </Text>
             <Icon as={MdAttachFile} boxSize="6" color={textColorPrimary} />
           </Flex>
-        </FormControl>
+        </FormControl> */}
         <Button
           onClick={handleSubmit}
           backgroundColor="#412AFB"
