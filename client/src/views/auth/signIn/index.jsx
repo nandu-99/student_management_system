@@ -56,6 +56,13 @@ function SignIn() {
   const handleLogin = async () => {
     setLoading(true);
     setError('');
+
+    if (!email || !password || !role) {
+      setError('Please fill in all fields.');
+      setLoading(false);
+      return;
+    }
+
     try {
       await login(email, password, role);
       toast({
@@ -70,11 +77,19 @@ function SignIn() {
         navigate('/admin');
       } else if (role === 'student') {
         navigate('/student');
-      } else if (role === 'teacher') {
-        navigate('/teacher');
       }
     } catch (error) {
-      setError('Login failed. Please check your credentials.');
+      if (error) {
+        if (error.response.data.error== 'Wrong password') {
+          setError('Incorrect password. Please try again.');
+        } else if (error.response.data.error== 'User Not Found') {
+          setError('No account found with this email in the selected role.');
+        } else {
+          setError('Login failed. Please try again.');
+        }
+      } else {
+        setError('An unexpected error occurred. Please try again later.');
+      }
     } finally {
       setLoading(false);
     }
