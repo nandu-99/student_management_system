@@ -201,6 +201,8 @@ function SignIn() {
               mb="24px"
               isLoading={loading}
               onClick={handleLogin}
+              bg={loading ? "blue.500" : "brand.500"} 
+              _hover={{ bg: loading ? "blue.600" : "brand.600" }}
             >
               Sign In
             </Button>

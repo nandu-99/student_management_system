@@ -97,6 +97,7 @@ export default function GeneralInformation(props) {
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
+      window.location.reload();
     } catch (error) {
       toast({
         title: "Submission Failed",
