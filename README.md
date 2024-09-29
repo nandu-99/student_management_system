@@ -6,25 +6,16 @@ The Student Management System (SMS) is a comprehensive web application designed 
 
 ## Features
 
-### User Authentication
-
-### Student Management
-
-### Dashboard
-
-### Admin Dashboard
-
-### Leave Requests and Approvals
-
-### Results
-
-### Upcoming Contests
-
-### Attendance
-
-### Events
-
-### Profile
+- **User Authentication**
+- **Student Management**
+- **Dashboard**
+- **Admin Dashboard**
+- **Leave Requests and Approvals**
+- **Results**
+- **Upcoming Contests**
+- **Attendance**
+- **Events**
+- **Profile**
 
 ## Installation
 
@@ -45,8 +36,10 @@ The Student Management System (SMS) is a comprehensive web application designed 
    npm start
    ```
 
+## Backend Code
+
+The backend code for the Student Management System can be found at the following URL: [Student Management System Backend](https://github.com/nandu-99/student_management_system_server)
+
 ## Contributing
 
 Contributions are welcome! If you would like to contribute to this project, please fork the repository and submit a pull request with your changes.
-
----
