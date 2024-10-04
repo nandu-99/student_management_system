@@ -75,6 +75,7 @@ export default function ComplexTable({ tableData, type }) {
         isClosable: true,
         position: 'top-right',
       });
+      window.location.reload();
     } catch (error) {
       console.error('Error approving leave:', error);
       toast({
@@ -85,6 +86,7 @@ export default function ComplexTable({ tableData, type }) {
         isClosable: true,
         position: 'top-right',
       });
+      window.location.reload();
     } finally {
       setLoading(false);
     }
